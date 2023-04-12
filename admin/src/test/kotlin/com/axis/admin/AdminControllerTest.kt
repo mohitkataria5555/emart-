@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.test.web.reactive.server.expectBody
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class AdminControllerTest {
@@ -50,5 +51,14 @@ class AdminControllerTest {
             .expectBody(Admin::class.java)
             .isEqualTo(admin1)
             .returnResult()
+    }
+    @Test
+    fun getAdminByMobileNo(){
+        webTestClient.get().uri("/admins/mobile/{mobileNo}",admin1.mobileNo)
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(Admin::class.java)
+            .returnResult()
+            .responseBody
     }
     }
