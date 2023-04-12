@@ -27,22 +27,22 @@ class ProductControllerTest {
 
 
     val product1=Product(
-        "P01",
-        "iphone 14",
-        "Apple Product",
-        80000.0,
-        "Electronics",
-        10,
-        "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-deeppurple?wid=2560&hei=1440&fmt=p-jpg&qlt=80&.v=1663703840578"
+       id= "P01",
+        name="iphone 14",
+        description="Apple Product",
+       price= 80000.0,
+        categoryName="Electronics",
+       quantity =  10,
+        imageUrl = "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-1inch-deeppurple?wid=2560&hei=1440&fmt=p-jpg&qlt=80&.v=1663703840578"
     )
     val product2=Product(
-        "P02",
-        "Shirt",
-        "Zara Product",
-        1999.0,
-        "Fashion",
-        10,
-        "https://static.zara.net/photos///2023/V/0/2/p/7545/522/250/2/w/750/7545522250_1_1_1.jpg?ts=1680261691875"
+        id="P02",
+       name= "Shirt",
+       description =  "Zara Product",
+       price =  1999.0,
+        categoryName = "Fashion",
+        quantity = 10,
+     imageUrl =    "https://static.zara.net/photos///2023/V/0/2/p/7545/522/250/2/w/750/7545522250_1_1_1.jpg?ts=1680261691875"
     )
 
 
@@ -95,6 +95,20 @@ class ProductControllerTest {
             .expectBody(Product::class.java)
             .returnResult()
             .responseBody
+    }
+
+    @Test
+    fun getProductByCategory(){
+
+        productRepository.saveAll(listOf(product1, product2)).collectList().block()
+        val response=webTestClient.get().uri("/api/products/category/{categoryName}", product1.categoryName)
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(Product::class.java)
+            .returnResult()
+            .responseBody
+        Assertions.assertThat(response).isNotNull
+        Assertions.assertThat(response)
     }
 }
 
