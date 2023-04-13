@@ -48,7 +48,7 @@ class ProductControllerTest {
 
     @Test
     fun getProductById(){
-        webTestClient.get().uri("/api/products/{P01}", product1.id)
+        webTestClient.get().uri("/api/products/{id}", product1.id)
             .exchange()
             .expectStatus().isOk
             .expectBody(Product::class.java)
@@ -89,27 +89,31 @@ class ProductControllerTest {
 
     @Test
     fun deleteProductById(){
-        webTestClient.delete().uri("/api/products/{P01}", product1.id)
+        webTestClient.delete().uri("/api/products/{id}", product1.id)
             .exchange()
             .expectStatus().isOk
             .expectBody(Product::class.java)
             .returnResult()
             .responseBody
+
+
     }
 
     @Test
-    fun getProductByCategory(){
+    fun getProductByCategory() {
 
         productRepository.saveAll(listOf(product1, product2)).collectList().block()
-        val response=webTestClient.get().uri("/api/products/category/{categoryName}", product1.categoryName)
+        val response = webTestClient.get().uri("/api/products/category/{categoryName}", product1.categoryName)
             .exchange()
             .expectStatus().isOk
-            .expectBody(Product::class.java)
+            .expectBodyList(Product::class.java)
             .returnResult()
             .responseBody
+
         Assertions.assertThat(response).isNotNull
-        Assertions.assertThat(response)
+        Assertions.assertThat(response).hasSize(2)
     }
+
 }
 
 
