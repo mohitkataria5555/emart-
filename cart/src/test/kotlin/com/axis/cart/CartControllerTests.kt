@@ -70,7 +70,7 @@ fun getAllCarts(){
 
     @Test
     fun createCart(){
-        webTestClient.post().uri("/carts/add",cart1.getMobileNo())
+        webTestClient.post().uri("/carts/add")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(cart1)
             .exchange()
