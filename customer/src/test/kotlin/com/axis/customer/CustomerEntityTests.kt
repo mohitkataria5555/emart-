@@ -29,6 +29,10 @@ class CustomerEntityTests {
         Assertions.assertThat(customer1.password).contains(String())
         Assertions.assertThat(customer1.password).contains("@")
     }
+    @Test
+    fun mobileNoLengthTest(){
+        Assertions.assertThat(customer1.mobileNo.toString().length == 10)
+    }
 
 }
 
