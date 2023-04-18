@@ -30,21 +30,21 @@ class CartServiceImpl(@Autowired private val cartRepository: CartRepository) : C
         return cartRepository.deleteById(mobileNo)
     }
 
-
-
     override fun updateCart(mobileNo: Long, cart: Cart): Mono<Cart> {
         return cartRepository.findById(mobileNo)
             .flatMap { existingCart ->
                 // Update the fields of the existing cart with the values from the new cart
-                 var name = cart.getName()
-                 var price = cart.getPrice()
-               val quantity = cart.getQuantity()
-             val totalPrice = cart.getTotalPrice()
-               val imageUrl = cart.getImageUrl()
+                existingCart.setName(cart.getName())
+                existingCart.setPrice(cart.getPrice())
+                existingCart.setQuantity(cart.getQuantity())
+                existingCart.setTotalPrice(cart.getTotalPrice())
+                existingCart.setImageUrl(cart.getImageUrl())
 
-                // Save the updated cart to the repository
+                // Save the updated cart to the repository and return it
                 cartRepository.save(existingCart)
             }
     }
+
+
 }
 

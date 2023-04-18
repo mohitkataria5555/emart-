@@ -9,6 +9,6 @@ interface ProductService {
     fun getProductsByCategory(categoryName: String): Flux<Product>
     fun getAllProducts(): Flux<Product>
     fun createProduct(product: Product): Mono<Product>
-    fun updateProduct(product: Product): Mono<Product>
+    fun updateProduct(id: String, product: Product): Mono<Product>
     fun deleteProduct(id: String): Mono<Void>
 }

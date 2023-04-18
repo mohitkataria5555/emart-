@@ -25,8 +25,16 @@ class ProductServiceImpl(private val productRepository: ProductRepository) : Pro
         return productRepository.save(product)
     }
 
-    override fun updateProduct(product: Product): Mono<Product> {
-        return productRepository.save(product)
+    override fun updateProduct(id: String, product: Product): Mono<Product> {
+        return productRepository.findById(id)
+            .flatMap { existingProduct ->
+
+                existingProduct.setPrice(product.getPrice())
+
+                existingProduct.setQuantity(product.getQuantity())
+                existingProduct.setImageUrl(product.getImageUrl())
+                productRepository.save(existingProduct)
+            }
     }
 
     override fun deleteProduct(id: String): Mono<Void> {

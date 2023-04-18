@@ -62,6 +62,10 @@ class Cart {
     fun getTotalPrice(): Double {
         return totalPrice
     }
+    fun setTotalPrice(totalPrice: Double) {
+        this.totalPrice=totalPrice
+    }
+
 
     fun getImageUrl(): String {
         return imageUrl

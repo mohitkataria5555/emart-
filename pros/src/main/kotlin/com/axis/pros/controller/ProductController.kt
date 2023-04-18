@@ -2,6 +2,7 @@ package com.axis.pros.controller
 
 import com.axis.pros.entity.Product
 import com.axis.pros.service.ProductService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
@@ -30,24 +31,15 @@ class ProductController(private val productService: ProductService) {
         return productService.getAllProducts()
     }
 
-    @PostMapping
-    fun createProduct(@RequestBody product: Product): Mono<ResponseEntity<Product>> {
+    @PostMapping("/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createProduct(@RequestBody product: Product): Mono<Product> {
         return productService.createProduct(product)
-            .map { ResponseEntity.created(URI("/api/products/${it.id}")).body(it) }
     }
 
-    @PutMapping("/{id}")
-    fun updateProduct(@PathVariable id: String, @RequestBody product: Product): Mono<ResponseEntity<Product>> {
-        return productService.getProductById(id)
-            .flatMap { existingProduct ->
-                val name = product.name
-                 val description = product.description
-                val price = product.price
-               val categoryName = product.categoryName
-                productService.updateProduct(existingProduct)
-            }
-            .map { ResponseEntity.ok(it) }
-            .defaultIfEmpty(ResponseEntity.notFound().build())
+    @PutMapping("/update/{id}")
+    fun updateCart(@PathVariable id: String, @RequestBody product: Product): Mono<Product> {
+        return productService.updateProduct(id, product)
     }
 
     @DeleteMapping("/{id}")
